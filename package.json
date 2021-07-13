@@ -1,0 +1,28 @@
+{
+  "name": "serv",
+  "version": "1.0.0",
+  "description": "testing express and DB",
+  "main": "Main.js",
+  "scripts": {
+    "dev": "nodemon Main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/T0R0NT0T0KY0/serv.git"
+  },
+  "author": "Dmitry",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/T0R0NT0T0KY0/serv/issues"
+  },
+  "homepage": "https://github.com/T0R0NT0T0KY0/serv#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pg": "^8.6.0",
+    "dotenv": "^10.0.0",
+    "sequelize": "^6.6.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}

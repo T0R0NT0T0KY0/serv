@@ -1,23 +1,31 @@
-// const db = require('../DB');
 const {cityDB} = require('../DB/CityDB');
 
 class Controller {
     async newCity (req, res) {
-        const {city, temperature, fill_temperature, weather, date_time} = req.body;
+        const {id, city, temperature, fill_temperature, weather, humidity, updatedAt, createdAt} = await req.body;
+        console.log(id);
+        console.log(city);
+        console.log(createdAt);
         cityDB.create({
+            id: id,
             city: city,
             weather: weather,
             temperature: temperature,
             fill_temperature: fill_temperature,
-            updatedAt: date_time,
-            createdAt: date_time
+            updatedAt: updatedAt,
+            createdAt: createdAt,
+            humidity: humidity
         })
-            .then(c => res.json(c))
-            .catch(e => res.json(e["original"]));
+            .then(c => res.send(c))
+            .catch(e => res.send(e["original"]));
+    }
+    
+    async send (req, res) {
+    
     }
     
     async getCities (req, res) {
-        cityDB.findAll({raw: true})
+        cityDB.findAll()
             .then(c => res.json(c))
             .catch(e => res.json(e));
     }
@@ -36,26 +44,28 @@ class Controller {
     
     async getCityByID (req, res) {
         const id = req.params.id;
-        cityDB.findByPk(id)
+        cityDB.findOne({where: {id: id}})
             .then(c => {
                 if (!c) {
                     return
                 }
-                res.send(JSON.stringify(c));
+                res.json(JSON.stringify(c));
             })
             .catch(e => res.send(e));
     }
     
     async getCityByName (req, res) {
-        const name = req.params.name;
-        cityDB.findOne({where: {city: name}})
+        
+        const city = req.params.city;
+        console.log(city);
+        cityDB.findByPk(city)
             .then(c => {
                 if (!c) {
                     return
                 }
-                res.send(JSON.stringify(c));
+                res.json(JSON.stringify(c));
             })
-            .catch(e => res.send(e));
+            .catch(e => res.json(e));
     }
     
     async updateInformation (req, res) {
@@ -80,7 +90,8 @@ class Controller {
         })
             .then(c => res.json({deleted: true, count: c}))
             .catch(e => res.json(e));
-    }
+    };
+    
 }
 
 module.exports = new Controller();

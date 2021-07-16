@@ -3,9 +3,6 @@ const {cityDB} = require('../DB/CityDB');
 class Controller {
     async newCity (req, res) {
         const {id, city, temperature, fill_temperature, weather, humidity, updatedAt, createdAt} = await req.body;
-        console.log(id);
-        console.log(city);
-        console.log(createdAt);
         cityDB.create({
             id: id,
             city: city,
@@ -55,15 +52,13 @@ class Controller {
     }
     
     async getCityByName (req, res) {
-        
         const city = req.params.city;
-        console.log(city);
         cityDB.findByPk(city)
             .then(c => {
                 if (!c) {
-                    return
+                    return res(null);
                 }
-                res.json(JSON.stringify(c));
+                return res.json(JSON.stringify(c));
             })
             .catch(e => res.json(e));
     }

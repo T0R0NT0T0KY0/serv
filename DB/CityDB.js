@@ -54,7 +54,6 @@ const cityDB = sequelize.define("city", {
 
 sequelize.sync().then(result => {
     console.log("DB connected successful");
-    console.log(result)
 })
     .catch(err => {
         console.log("DB error connection")

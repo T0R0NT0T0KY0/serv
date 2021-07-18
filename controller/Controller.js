@@ -5,6 +5,7 @@ class Controller {
         const {id, city, temperature, fill_temperature, weather, humidity, updatedAt, createdAt} = await req.body;
         cityDB.create({
             id: id,
+            name: city.toLowerCase().replace(/[^a-z]/g, ""),
             city: city,
             weather: weather,
             temperature: temperature,
@@ -14,10 +15,10 @@ class Controller {
             humidity: humidity
         })
             .then(c => res.send(c))
-            .catch(e => res.send(e["original"]));
+            .catch(e => res.json(e["original"]));
     }
     
-    async send (req, res) {
+    async inDev (req, res) {
     
     }
     
@@ -28,7 +29,7 @@ class Controller {
     }
     
     // async getCityUpTemperature(req, res) {
-    //     const temperature = req.params.t;
+    // const temperature = req.query.t;
     //     cityDB.findAll({больше:{temperature:temperature}, raw: true)
     //         .then(c => {
     //             if (!c) {
@@ -48,23 +49,25 @@ class Controller {
                 }
                 res.json(JSON.stringify(c));
             })
-            .catch(e => res.send(e));
-    }
-    
-    async getCityByName (req, res) {
-        const city = req.params.city;
-        cityDB.findByPk(city)
-            .then(c => {
-                if (!c) {
-                    return res(null);
-                }
-                return res.json(JSON.stringify(c));
-            })
             .catch(e => res.json(e));
     }
     
+    async getCityByName (req, res) {
+        const cityName = req.params.city.toLowerCase().replace(/[^a-z]/g, "");
+        console.log(cityName);
+        cityDB.findByPk(cityName)
+            .then(c => {
+                if (!c) {
+                    return res.json(null);
+                }
+                return res.json(JSON.stringify(c));
+            })
+            .catch(() => res.json(null));
+    }
+    
     async updateInformation (req, res) {
-        const {city, temperature, fill_temperature, weather, date_time} = req.body;
+        const {temperature, fill_temperature, weather, date_time} = req.body;
+        const cityName = req.body.city.toLowerCase().replace(/[^a-z]/g, "");
         
         cityDB.update({
             weather: weather,
@@ -72,16 +75,16 @@ class Controller {
             fill_temperature: fill_temperature,
             updatedAt: date_time
         }, {
-            where: {city: city}
+            where: {name: cityName}
         })
             .then(c => res.json(c))
             .catch(e => res.json(e));
     }
     
     async deleteCity (req, res) {
-        const city = req.params.city;
+        const cityName = req.params.city.toLowerCase().replace(/[^a-z]/g, "");
         cityDB.destroy({
-            where: {city: city}
+            where: {name: cityName}
         })
             .then(c => res.json({deleted: true, count: c}))
             .catch(e => res.json(e));

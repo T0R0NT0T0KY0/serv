@@ -22,8 +22,12 @@ const cityDB = sequelize.define("city", {
         allowNull: false,
         unique: true
     },
-    city: {
+    name: {
         primaryKey: true,
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    city: {
         type: Sequelize.STRING,
         allowNull: false
     },

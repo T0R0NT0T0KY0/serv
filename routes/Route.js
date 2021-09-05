@@ -1,12 +1,22 @@
 const Router = require('express');
 const router = new Router();
-const Controller = require('../controller/Controller');
+const CityController = require('../components/city/CityController');
+const MusicController = require('../components/music/MusicController');
 
-router.get('/', Controller.inDev)
-router.post('/city', Controller.newCity);
-router.get('/city', Controller.getCities);
-router.get('/city/:city', Controller.getCityByName);
-router.put('/city', Controller.updateInformation);
-router.delete('/city/:city', Controller.deleteCity);
+// route для city
+router.post('/city', CityController.createCityController);
+router.get('/city', CityController.getAllCitiesController);
+router.get('/city/:city', CityController.getCityByNameController);
+router.get('/city/:id', CityController.getCityByIDController);
+router.put('/city', CityController.updateInformationAboutCityController);
+router.delete('/city/:city', CityController.deleteCityByNameController);
+
+//route для music
+router.post('/music', MusicController.newMusic);
+router.get('/music', MusicController.getMusics);
+router.get('/music/:music', MusicController.getMusicByName);
+router.delete('/music/:music', MusicController.deleteMusic);
+
+
 
 module.exports = {router};

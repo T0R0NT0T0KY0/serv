@@ -1,19 +1,5 @@
-const Sequelize = require("sequelize");
-require('dotenv').config();
-
-const dialect = process.env.DIALECT;
-const host = process.env.DBHOST;
-const password = process.env.DBPASSWORD;
-const user = process.env.DBUSERNAME;
-const db = process.env.DB;
-const port = process.env.DBPORT;
-
-const sequelize = new Sequelize(db, user, password, {
-    dialect: dialect,
-    host: host,
-    port: port,
-});
-
+const {Sequelize} = require("sequelize");
+const {sequelize} = require("resources/DB/DB");
 
 const cityDB = sequelize.define("city", {
     id: {
@@ -55,13 +41,5 @@ const cityDB = sequelize.define("city", {
         allowNull: false
     }
 });
-
-sequelize.sync().then(result => {
-    console.log("DB connected successful");
-})
-    .catch(err => {
-        console.log("DB error connection")
-        console.log(err);
-    });
 
 module.exports = {cityDB};
